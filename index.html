@@ -21,42 +21,189 @@
   </head>
 
   <body>
+    <header class="header">
+      <div class="main-title">
+        <h1>LES PETITS PLATS</h1>
+        <div class="ellipse">
+          <i class="fa-regular fa-circle big"></i>
+          <i class="fa-regular fa-circle small"></i>
+        </div>
+      </div>
+
+      <div class="middle-title">
+        <h2>
+          CHERCHEZ PARMI PLUS DE 1500 RECETTES <br />
+          DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
+        </h2>
+      </div>
+
+      <div class="searchbar">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="   Rechercher une recette, un ingrédient..."
+        />
+        <button class="search-button" type="submit" id="search-button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+    </header>
+
     <main>
-      <header class="header">
-        <div class="main-title">
-          <h1>LES PETITS PLATS</h1>
-          <div class="ellipse">
-            <i class="fa-regular fa-circle big"></i>
-            <i class="fa-regular fa-circle small"></i>
-          </div>
-        </div>
-
-        <div class="middle-title">
-          <h2>
-            CHERCHEZ PARMI PLUS DE 1500 RECETTES <br />
-            DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
-          </h2>
-        </div>
-
-        <div class="searchbar">
-          <input
-            type="text"
-            class="search-input"
-            placeholder="   Rechercher une recette, un ingrédient..."
-          />
-          <button class="search-button" type="submit" id="search-button">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-      </header>
-
       <section class="filtersAndRecipes-amount">
         <div class="filters">
-          <div class="filter-ingredients"></div>
-          <div class="filter-appliances"></div>
-          <div class="filter-ustensils"></div>
+          <div class="filter-ingredients">
+            <div class="sort-container">
+              <div class="sort-select">
+                <div
+                  class="selected-option"
+                  tabindex="0"
+                  role="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
+                  <h3>Ingrédients</h3>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <ul
+                  class="options-list"
+                  id="options-list"
+                  role="listbox"
+                  aria-labelledby="sort-by"
+                >
+                  <li
+                    class="sort-option"
+                    data-value="likes"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    X
+                  </li>
+                  <li
+                    class="sort-option"
+                    data-value="title"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    Y
+                  </li>
+                  <li
+                    class="sort-option"
+                    data-value="date"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    Z
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="filter-appliances">
+            <div class="sort-container">
+              <div class="sort-select">
+                <div
+                  class="selected-option"
+                  tabindex="0"
+                  role="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
+                  <h3>Appareils</h3>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <ul
+                  class="options-list"
+                  id="options-list"
+                  role="listbox"
+                  aria-labelledby="sort-by"
+                >
+                  <li
+                    class="sort-option"
+                    data-value="likes"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    A
+                  </li>
+                  <li
+                    class="sort-option"
+                    data-value="title"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    B
+                  </li>
+                  <li
+                    class="sort-option"
+                    data-value="date"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    C
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="filter-ustensils">
+            <div class="sort-container">
+              <div class="sort-select">
+                <div
+                  class="selected-option"
+                  tabindex="0"
+                  role="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
+                  <h3>Ustensils</h3>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <ul
+                  class="options-list"
+                  id="options-list"
+                  role="listbox"
+                  aria-labelledby="sort-by"
+                >
+                  <li
+                    class="sort-option"
+                    data-value="likes"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    P
+                  </li>
+                  <li
+                    class="sort-option"
+                    data-value="title"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    Q
+                  </li>
+                  <li
+                    class="sort-option"
+                    data-value="date"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="false"
+                  >
+                    R
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="recipes-amount"></div>
+        <div class="recipes-amount">XXXXX RECETTES</div>
       </section>
 
       <section class="tags">
@@ -65,11 +212,95 @@
         <div class="tag-ustensils"></div>
       </section>
 
-      <section class="recipes-cards"></section>
+      <section class="recipes-cards">
+        <article class="card">
+          <div class="card-content">
+            <div class="img-recipe">
+              <img
+                src="images/recipes/Recette01.jpg"
+                class="illustration"
+                alt="Première recette en photo"
+              />
+            </div>
+            <div class="recipe-title">
+              <h2>${name}</h2>
+            </div>
+            <div class="recipe-whole">
+              <div class="recipe-text">
+                <h3>RECETTE</h3>
+                <p>[DESCRIPTION]</p>
+              </div>
+              <div class="recipe-ingredients">
+                <h3>INGRÉDIENTS</h3>
+                <p>
+                  ${ingredients} <br />
+                  ${quantity}${unit}
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-content">
+            <div class="img-recipe">
+              <img
+                src="images/recipes/Recette02.jpg"
+                class="illustration"
+                alt="Deuxième recette en photo"
+              />
+            </div>
+            <div class="recipe-title">
+              <h2>${name}</h2>
+            </div>
+            <div class="recipe-whole">
+              <div class="recipe-text">
+                <h3>RECETTE</h3>
+                <p>[DESCRIPTION]</p>
+              </div>
+              <div class="recipe-ingredients">
+                <h3>INGRÉDIENTS</h3>
+                <p>
+                  ${ingredients} <br />
+                  ${quantity}${unit}
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-content">
+            <div class="img-recipe">
+              <img
+                src="images/recipes/Recette03.jpg"
+                class="illustration"
+                alt="Troisième recette en photo"
+              />
+            </div>
+            <div class="recipe-title">
+              <h2>${name}</h2>
+            </div>
+            <div class="recipe-whole">
+              <div class="recipe-text">
+                <h3>RECETTE</h3>
+                <p>[DESCRIPTION]</p>
+              </div>
+              <div class="recipe-ingredients">
+                <h3>INGRÉDIENTS</h3>
+                <p>
+                  ${ingredients} <br />
+                  ${quantity}${unit}
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
 
       <span class="no-result-message"></span>
     </main>
 
-    <script></script>
+    <script src="./scripts/index.js"></script>
   </body>
 </html>

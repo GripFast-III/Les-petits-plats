@@ -14,7 +14,7 @@ body {
 
 main {
     /*width: 1240px;*/
-    margin: auto;
+    margin: 2rem;
     font-family: "Anton", sans-serif;
 }
 
@@ -27,6 +27,7 @@ main {
     background-repeat: no-repeat;
     background-position: center center;
     padding: 40px;
+    font-family: "Anton", sans-serif;
 }
 
 .header::before {
@@ -122,8 +123,37 @@ h1 {
     margin-bottom :20px;
 }
 
+.filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5rem;
+}
+
+.selected-option {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.fa-chevron-down {
+    align-self: center;
+    color: black;
+}
+
+.recipes-amount {
+    display: flex;
+    align-self: center;
+}
+
 .filter-ingredients, .filter-appliances, .filter-ustensils {
     font-family: "Manrope", sans-serif;
+    border: white solid 4px;
+    border-radius: 11px;
+    background-color: white;
+
 }
 
 .tags {
@@ -138,3 +168,32 @@ h1 {
     justify-content: space-between;
 }
 
+.card {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 11px;
+    background-color: white;
+}
+
+.img-recipe {
+    height: 15rem;
+    overflow: hidden;
+    border-radius: 11px 11px 0px 0px;
+}
+
+.illustration {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-title, .recipe-whole {
+    margin-left: 5%;
+}
