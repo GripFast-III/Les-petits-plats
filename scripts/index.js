@@ -15,65 +15,54 @@ async function getRecipes() {
 
 // Génère les éléments HTML d'une recette
 function createRecipeCard(recipe) {
+  const {
+    id,
+    image,
+    name,
+    servings,
+    ingredients,
+    time,
+    description,
+    appliance,
+    ustensils,
+  } = recipe;
   const card = document.createElement("article");
   card.classList.add("card");
 
-  const cardContent = document.createElement("div");
-  cardContent.classList.add("card-content");
+  let ingredientsHtml = "";
+  ingredients.forEach((itemIngredient) => {
+    ingredientsHtml += `<li>${itemIngredient.ingredient}
+     ${itemIngredient?.quantity ? itemIngredient.quantity : ""}
+    ${itemIngredient?.unit ? itemIngredient.unit : ""}</li>`;
+  }); // itemIngredient?.quantity rend optionnelle la présence de la quantité
 
-  const imgRecipe = document.createElement("div");
-  imgRecipe.classList.add("img-recipe");
+  let templateCard = `
+  <div class="card-content">
+    <div class="img-recipe">
+      <img
+        src="images/recipes/${image}"
+        class="illustration"
+        alt="Photo de ${name}"
+      />
+    </div>
+    <div class="recipe-title">
+      <h2>${name}</h2>
+    </div>
+    <div class="recipe-whole">
+      <div class="recipe-text">
+        <h3>RECETTE</h3>
+        <p>${description}</p>
+      </div>
+      <div class="recipe-ingredients">
+        <h3>INGRÉDIENTS</h3>
+        <ul>
+            ${ingredientsHtml}
+        </ul>
+      </div>
+    </div>
+  </div>`;
 
-  const img = document.createElement("img");
-  img.classList.add("illustration");
-  img.src = `images/recipes/${recipe.image}`;
-  img.alt = recipe.name;
-
-  imgRecipe.appendChild(img);
-
-  const recipeTitle = document.createElement("div");
-  recipeTitle.classList.add("recipe-title");
-  const h2 = document.createElement("h2");
-  h2.textContent = recipe.name;
-  recipeTitle.appendChild(h2);
-
-  const recipeWhole = document.createElement("div");
-  recipeWhole.classList.add("recipe-whole");
-
-  const recipeText = document.createElement("div");
-  recipeText.classList.add("recipe-text");
-  const h3Text = document.createElement("h3");
-  h3Text.textContent = "RECETTE";
-  const pText = document.createElement("p");
-  pText.textContent = recipe.description;
-  recipeText.appendChild(h3Text);
-  recipeText.appendChild(pText);
-
-  const recipeIngredients = document.createElement("div");
-  recipeIngredients.classList.add("recipe-ingredients");
-  const h3Ingredients = document.createElement("h3");
-  h3Ingredients.textContent = "INGRÉDIENTS";
-
-  const ulIngredients = document.createElement("ul");
-  recipe.ingredients.forEach((ingredient) => {
-    const li = document.createElement("li");
-    li.textContent = `${ingredient.ingredient} ${ingredient.quantity || ""} ${
-      ingredient.unit || ""
-    }`;
-    ulIngredients.appendChild(li);
-  });
-
-  recipeIngredients.appendChild(h3Ingredients);
-  recipeIngredients.appendChild(ulIngredients);
-
-  recipeWhole.appendChild(recipeText);
-  recipeWhole.appendChild(recipeIngredients);
-
-  cardContent.appendChild(imgRecipe);
-  cardContent.appendChild(recipeTitle);
-  cardContent.appendChild(recipeWhole);
-
-  card.appendChild(cardContent);
+  card.innerHTML = templateCard;
 
   return card;
 }
