@@ -31,10 +31,16 @@ function createRecipeCard(recipe) {
 
   let ingredientsHtml = "";
   ingredients.forEach((itemIngredient) => {
-    ingredientsHtml += `<li>${itemIngredient.ingredient}
-     ${itemIngredient?.quantity ? itemIngredient.quantity : ""}
-    ${itemIngredient?.unit ? itemIngredient.unit : ""}</li>`;
-  }); // itemIngredient?.quantity rend optionnelle la présence de la quantité
+    ingredientsHtml += `<li><span class="ingredient-name">${
+      itemIngredient.ingredient
+    }</span><br/>
+     <span class="quantity-number">${
+       itemIngredient?.quantity ? itemIngredient.quantity : ""
+     }</span>
+     <span class="quantity-unit">${
+       itemIngredient?.unit ? itemIngredient.unit : ""
+     }</span></li>`;
+  }); // Dans "itemIngredient?.quantity", le "?" rend optionnelle la présence de la quantité
 
   let templateCard = `
   <div class="card-content">
@@ -82,7 +88,7 @@ async function displayRecipes() {
     });
 
     // Met à jour le nombre total de recettes dans la <div class="recipes-amount" id="total-recipes">
-    totalRecipesElement.textContent = `${recipes.length} RECETTES`;
+    totalRecipesElement.textContent = `${recipes.length} recettes`;
   } catch (error) {
     console.error("Erreur lors de l'affichage des recettes:", error);
   }

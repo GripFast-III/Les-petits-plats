@@ -36,7 +36,7 @@ main {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 608px;
     background-color: rgba(0, 0, 0, 0.3);
     pointer-events: none;
 }
@@ -81,7 +81,11 @@ h1 {
     margin-bottom: 2rem;
     line-height: 50px;
     font-size: 25px;
-    z-index: 999
+    z-index: 999;
+        h2 {
+            font-size: 25px;
+            margin-left: 0%;
+        }
 }
 
 .searchbar {
@@ -146,6 +150,8 @@ h1 {
 .recipes-amount {
     display: flex;
     align-self: center;
+    font-weight: bold;
+    font-size: 21px;
 }
 
 .filter-ingredients, .filter-appliances, .filter-ustensils {
@@ -153,7 +159,10 @@ h1 {
     border: white solid 4px;
     border-radius: 11px;
     background-color: white;
+}
 
+h3, .options-list {
+    font-weight: normal;
 }
 
 .tags {
@@ -166,12 +175,12 @@ h1 {
 .recipes-cards {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap
 }
 
 .card {
-    display: flex;
-    justify-content: space-between;
     width: 30%;
+    margin-bottom: 30px;
 }
 
 .card-content {
@@ -180,6 +189,7 @@ h1 {
     width: 100%;
     border-radius: 11px;
     background-color: white;
+    height: 100%;
 }
 
 .img-recipe {
@@ -194,6 +204,38 @@ h1 {
     object-fit: cover;
 }
 
-.recipe-title, .recipe-whole {
-    margin-left: 5%;
+h2 {
+    margin-left: 6%;
+    font-size: 18px;
+}
+
+.recipe-text, .recipe-ingredients {
+    margin: 6%;
+        h3 {
+            font-size: 12px;
+            font-weight: normal;
+            color: #7A7A7A;
+        }
+        p, ul {
+            font-size: 14px
+        }
+}
+
+ul {
+    list-style-type: none;
+    padding: inherit;
+    column-count: 2;
+    column-gap: 20px;
+}
+
+li {
+    margin-bottom: 15px;
+}
+
+.ingredient-name {
+    color: black;
+}
+  
+.quantity-unit, .quantity-number {
+    color: #7A7A7A;
 }
