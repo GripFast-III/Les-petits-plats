@@ -133,19 +133,26 @@ async function displayRecipes() {
 displayRecipes();
 
 // Sélectionne tous les en-têtes de filtres et leurs listes correspondantes
-const filterHeaders = document.querySelectorAll(".filter-header");
+const filterHeaders = document.querySelectorAll(".filter-list");
 const filterLists = document.querySelectorAll(".options-list");
+
+let isRotated = false;
 
 // Fonction pour gérer l'ouverture/fermeture de la liste et la rotation du chevron
 function toggleList(document, list) {
-  const chevronIcon = document.querySelectorAll(".fa-solid.fa-chevron-down");
-  if (list.classList.contains("hidden")) {
+  const chevronIcon = document.querySelector(".fa-solid.fa-chevron-down");
+
+  if (!isRotated) {
     list.classList.remove("hidden");
+    chevronIcon.classList.remove("rotate-0");
     chevronIcon.classList.add("rotate-180");
   } else {
     list.classList.add("hidden");
     chevronIcon.classList.remove("rotate-180");
+    chevronIcon.classList.add("rotate-0");
   }
+
+  isRotated = !isRotated;
 }
 
 // Ajoute un gestionnaire d'événement de clic à chaque en-tête de filtre
