@@ -5,11 +5,16 @@ async function getRecipes() {
     if (response.ok) {
       const recipesData = await response.json();
       const recipes = recipesData.recipes; // Appel la fonction qui récupère les ingrédients, appareils et ustensiles
-      const { uniqueIngredients, uniqueAppliances, uniqueUstensils } =
-        getUniqueStuff(recipes);
-      console.log("Ingrédients uniques:", Array.from(uniqueIngredients));
-      console.log("Appareils uniques:", Array.from(uniqueAppliances));
-      console.log("Ustensils uniques:", Array.from(uniqueUstensils));
+      const [uniqueIngredients, uniqueAppliances, uniqueUstensils] =
+        await getUniqueStuff(recipes);
+      console.log("Ingrédients uniques:", uniqueIngredients);
+      console.log("Appareils uniques:", uniqueAppliances);
+      console.log("Ustensils uniques:", uniqueUstensils);
+
+      displayList(uniqueIngredients, "options-list-ingredients");
+      displayList(uniqueAppliances, "options-list-appliances");
+      displayList(uniqueUstensils, "options-list-ustensils");
+
       return recipes;
     } else {
       throw new Error("Erreur de la récupération de la donnéee");
@@ -19,8 +24,8 @@ async function getRecipes() {
   }
 }
 
-// Fonction qui récupère les ingrédients appareils et ustensils
-function getUniqueStuff(recipes) {
+// Fonction qui récupère les ingrédients, appareils et ustensils
+async function getUniqueStuff(recipes) {
   const uniqueIngredients = new Set();
   const uniqueAppliances = new Set();
   const uniqueUstensils = new Set();
@@ -40,11 +45,7 @@ function getUniqueStuff(recipes) {
     });
   });
 
-  return {
-    uniqueIngredients,
-    uniqueAppliances,
-    uniqueUstensils,
-  };
+  return [uniqueIngredients, uniqueAppliances, uniqueUstensils];
 }
 
 // Génère les éléments HTML d'une recette
@@ -163,25 +164,6 @@ filterHeaders.forEach((header, index) => {
   });
 });
 
-/*
-// Ajoute un gestionnaire d'événement de clic à chaque en-tête de filtre
-filterHeaders.forEach((header, index) => {
-  header.addEventListener("click", () => {
-    // Affiche la liste correspondante
-    const filterList = filterLists[index];
-
-    // Bascule la classe "hidden" pour montrer ou cacher la liste
-    filterList.classList.toggle("hidden");
-
-    // Sélectionne l'icône du chevron
-    const chevronIcon = header.querySelector(".fa-chevron-down");
-
-    // Bascule la classe "rotate-180" pour faire pivoter l'icône
-    chevronIcon.classList.toggle("rotate-180");
-  });
-});
-*/
-
 getRecipes()
   .then((data) => {
     console.log("🚀 ~ file: index.js:20 ~ .then ~ data:", data);
@@ -190,3 +172,17 @@ getRecipes()
   .catch((err) => {
     console.log("Error", err);
   });
+
+const displayList = (source, target) => {
+  let targetHtml = document.getElementById(target);
+  console.log(
+    "🚀 ~ file: index.js:177 ~ displayList ~ targetHtml:",
+    targetHtml
+  );
+
+  source.forEach((item) => {
+    const liHtml = document.createElement("li");
+    liHtml.textContent = item;
+    targetHtml.append(liHtml);
+  });
+};

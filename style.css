@@ -178,6 +178,10 @@ h1 {
     border: white solid 4px;
     border-radius: 11px;
     background-color: white;
+    width: 150px;
+        :hover{
+        cursor: pointer;
+        }
 }
 
 h3, .options-list {
@@ -263,6 +267,11 @@ ul {
     padding: inherit;
     column-count: 2;
     column-gap: 20px;
+    background-color: white;
+    transform: translateY(-6px);
+    border: 5px white solid;
+    margin: -4px;
+    border-radius: 0px 0px 11px 11px;
 }
 
 li {
