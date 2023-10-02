@@ -143,6 +143,10 @@ h1 {
     display: none;
 }
 
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
 .selected-option {
     display: flex;
     justify-content: space-between;

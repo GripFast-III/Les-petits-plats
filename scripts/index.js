@@ -137,8 +137,8 @@ const filterHeaders = document.querySelectorAll(".filter-header");
 const filterLists = document.querySelectorAll(".options-list");
 
 // Fonction pour gérer l'ouverture/fermeture de la liste et la rotation du chevron
-function toggleList(header, list) {
-  const chevronIcon = header.querySelector(".fa-chevron-down");
+function toggleList(document, list) {
+  const chevronIcon = document.querySelectorAll(".fa-solid.fa-chevron-down");
   if (list.classList.contains("hidden")) {
     list.classList.remove("hidden");
     chevronIcon.classList.add("rotate-180");
