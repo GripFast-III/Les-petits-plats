@@ -38,11 +38,7 @@
       </div>
 
       <div class="searchbar">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="   Rechercher une recette, un ingrédient..."
-        />
+        <input type="text" class="search-input" />
         <button class="search-button" type="submit" id="search-button">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
@@ -84,6 +80,7 @@
               </div>
             </div>
           </div>
+
           <div class="filter-appliances filter-list">
             <div class="sort-container">
               <div class="sort-select">
@@ -97,53 +94,26 @@
                   <h3 class="filter-header">Appareils</h3>
                   <i class="fa-solid fa-chevron-down"></i>
                 </div>
+                <div class="mini-searchbar">
+                  <input type="text" class="search-input" />
+                  <button
+                    class="search-button"
+                    type="submit"
+                    id="search-button"
+                  >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </button>
+                </div>
                 <ul
                   class="options-list hidden"
                   id="options-list-appliances"
                   role="listbox"
                   aria-labelledby="sort-by"
-                >
-                  <div class="mini-searchbar">
-                    <input type="text" class="search-input" />
-                    <button
-                      class="search-button"
-                      type="submit"
-                      id="search-button"
-                    >
-                      <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                  </div>
-                  <li
-                    class="sort-option"
-                    data-value="likes"
-                    tabindex="0"
-                    role="option"
-                    aria-selected="false"
-                  >
-                    A
-                  </li>
-                  <li
-                    class="sort-option"
-                    data-value="title"
-                    tabindex="0"
-                    role="option"
-                    aria-selected="false"
-                  >
-                    B
-                  </li>
-                  <li
-                    class="sort-option"
-                    data-value="date"
-                    tabindex="0"
-                    role="option"
-                    aria-selected="false"
-                  >
-                    C
-                  </li>
-                </ul>
+                ></ul>
               </div>
             </div>
           </div>
+
           <div class="filter-ustensils filter-list">
             <div class="sort-container">
               <div class="sort-select">
@@ -157,54 +127,27 @@
                   <h3 class="filter-header">Ustensils</h3>
                   <i class="fa-solid fa-chevron-down"></i>
                 </div>
+                <div class="mini-searchbar">
+                  <input type="text" class="search-input" />
+                  <button
+                    class="search-button"
+                    type="submit"
+                    id="search-button"
+                  >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </button>
+                </div>
                 <ul
                   class="options-list hidden"
                   id="options-list-ustensils"
                   role="listbox"
                   aria-labelledby="sort-by"
-                >
-                  <div class="mini-searchbar">
-                    <input type="text" class="search-input" />
-                    <button
-                      class="search-button"
-                      type="submit"
-                      id="search-button"
-                    >
-                      <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                  </div>
-                  <li
-                    class="sort-option"
-                    data-value="likes"
-                    tabindex="0"
-                    role="option"
-                    aria-selected="false"
-                  >
-                    P
-                  </li>
-                  <li
-                    class="sort-option"
-                    data-value="title"
-                    tabindex="0"
-                    role="option"
-                    aria-selected="false"
-                  >
-                    Q
-                  </li>
-                  <li
-                    class="sort-option"
-                    data-value="date"
-                    tabindex="0"
-                    role="option"
-                    aria-selected="false"
-                  >
-                    R
-                  </li>
-                </ul>
+                ></ul>
               </div>
             </div>
           </div>
         </div>
+
         <div class="recipes-amount" id="total-recipes"></div>
       </section>
 

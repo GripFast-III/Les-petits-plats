@@ -175,14 +175,124 @@ getRecipes()
 
 const displayList = (source, target) => {
   let targetHtml = document.getElementById(target);
+  let existingItems = Array.from(targetHtml.querySelectorAll("li"));
   console.log(
     "🚀 ~ file: index.js:177 ~ displayList ~ targetHtml:",
     targetHtml
   );
+  console.log(
+    "🚀 ~ file: index.js:179 ~ displayList ~ existingItems:",
+    existingItems
+  );
 
   source.forEach((item) => {
-    const liHtml = document.createElement("li");
-    liHtml.textContent = item;
-    targetHtml.append(liHtml);
+    if (!existingItems.some((li) => li.textContent === item)) {
+      // Si les éléments dans le li existent déjà, cela évite de créer des doublons
+      const liHtml = document.createElement("li");
+      liHtml.textContent = item;
+      targetHtml.append(liHtml);
+    }
   });
 };
+
+// Fonction qui permet de "jouer" avec les filtres dans la sélection concernée
+// Sélections des barres de recherche Ingrédients, Appareils et Ustensils
+const ingredientsSearchInput = document.querySelector(
+  ".filter-ingredients .search-input"
+);
+const ingredientsOptionsList = document.querySelector(
+  "#options-list-ingredients"
+);
+
+const appliancesSearchInput = document.querySelector(
+  ".filter-appliances .search-input"
+);
+const appliancesOptionsList = document.querySelector(
+  "#options-list-appliances"
+);
+
+const ustensilsSearchInput = document.querySelector(
+  ".filter-ustensils .search-input"
+);
+const ustensilsOptionsList = document.querySelector("#options-list-ustensils");
+
+// Gestion de l'événement de saisie de texte dans la barre de recherche des Ingrédients
+ingredientsSearchInput.addEventListener("input", function () {
+  const searchTerm = this.value.toLowerCase();
+  const ingredients = [...ingredientsOptionsList.querySelectorAll("li")];
+
+  ingredients.forEach((ingredient) => {
+    const text = ingredient.textContent.toLowerCase();
+    if (text.includes(searchTerm)) {
+      ingredient.style.display = "block";
+    } else {
+      ingredient.style.display = "none";
+    }
+  });
+});
+
+// Gestion de l'événement de saisie de texte dans la barre de recherche des Appareils
+appliancesSearchInput.addEventListener("input", function () {
+  const searchTerm = this.value.toLowerCase();
+  const appliances = [...appliancesOptionsList.querySelectorAll("li")];
+
+  appliances.forEach((appliance) => {
+    const text = appliance.textContent.toLowerCase();
+    if (text.includes(searchTerm)) {
+      appliance.style.display = "block";
+    } else {
+      appliance.style.display = "none";
+    }
+  });
+});
+
+// Gestion de l'événement de saisie de texte dans la barre de recherche des Ustensils
+ustensilsSearchInput.addEventListener("input", function () {
+  const searchTerm = this.value.toLowerCase();
+  const ustensils = [...ustensilsOptionsList.querySelectorAll("li")];
+
+  ustensils.forEach((ustensil) => {
+    const text = ustensil.textContent.toLowerCase();
+    if (text.includes(searchTerm)) {
+      ustensil.style.display = "block";
+    } else {
+      ustensil.style.display = "none";
+    }
+  });
+});
+
+// Affiche l'élément sélectionné dans la barre de recherche pour Ingrédients
+const ingredientsOptions = ingredientsOptionsList.querySelectorAll("li");
+
+ingredientsOptions.forEach((ingredient) => {
+  ingredient.addEventListener("click", function () {
+    const selectedIngredient = this.textContent;
+    ingredientsSearchInput.value = selectedIngredient;
+    // Masque la liste déroulante après la sélection
+    ingredientsOptionsList.classList.add("hidden");
+  });
+});
+
+// Affiche l'élément sélectionné dans la barre de recherche pour Appareils
+const appliancesOptions = appliancesOptionsList.querySelectorAll("li");
+
+appliancesOptions.forEach((appliance) => {
+  appliance.addEventListener("click", function () {
+    const selectedAppliance = this.textContent;
+    appliancesSearchInput.value = selectedAppliance;
+    // Masque la liste déroulante après la sélection
+    appliancesOptionsList.classList.add("hidden");
+  });
+});
+
+// Affiche l'élément sélectionné dans la barre de recherche pour Ustensils
+const ustensilsOptions = ustensilsOptionsList.querySelectorAll("li");
+
+ustensilsOptions.forEach((ustensil) => {
+  ustensil.addEventListener("click", function () {
+    const selectedUstensil = this.textContent;
+    ustensilsSearchInput.value = selectedUstensil;
+    // Masque la liste déroulante après la sélection
+    ustensilsOptionsList.classList.add("hidden");
+  });
+});

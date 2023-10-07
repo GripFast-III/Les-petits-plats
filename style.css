@@ -139,6 +139,10 @@ h1 {
     gap: 5rem;
 }
 
+.mini-searchbar {
+    display: none;
+}
+
 .hidden {
     display: none;
 }
@@ -152,6 +156,20 @@ h1 {
     transform: rotate(0deg);
     transition: transform 0.3s ease;
 }
+
+#options-list-appliances, .options-list {
+    list-style-type: none;
+    padding: inherit;
+    column-count: 1;
+    column-gap: 20px;
+    background-color: white;
+    transform: translateY(-6px);
+    border: 0px white solid;
+    margin: -4px;
+    border-radius: 0px 0px 11px 11px
+}
+
+
 
 .selected-option {
     display: flex;
@@ -179,6 +197,7 @@ h1 {
     border-radius: 11px;
     background-color: white;
     width: 150px;
+    z-index: 9999;
         :hover{
         cursor: pointer;
         }
@@ -230,7 +249,7 @@ h3, .options-list {
     font-style: normal;
     font-weight: normal;
     background-color: #FFD15B;
-    z-index: 9999;
+    z-index: 1;
 }
 
 .img-recipe {
@@ -278,10 +297,29 @@ li {
     margin-bottom: 15px;
 }
 
+li:hover {
+ border-color: #FFD15B;
+}
+
 .ingredient-name {
     color: black;
 }
   
 .quantity-unit, .quantity-number {
     color: #7A7A7A;
+}
+
+.options-list li {
+    margin-bottom: 0px;
+    padding: 12px;
+}
+
+.options-list li:hover {
+    background-color: #FFD15B;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.options-list li::first-letter {
+    text-transform: uppercase;
 }
