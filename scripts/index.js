@@ -140,17 +140,20 @@ const filterLists = document.querySelectorAll(".options-list");
 let isRotated = false;
 
 // Fonction pour gérer l'ouverture/fermeture de la liste et la rotation du chevron
-function toggleList(document, list) {
-  const chevronIcon = document.querySelector(".fa-solid.fa-chevron-down");
+function toggleList(header, list) {
+  const chevronIcon = header.querySelector(".fa-solid.fa-chevron-down");
+  const miniSearchBar = header.querySelector(".mini-searchbar");
 
   if (!isRotated) {
-    list.classList.remove("hidden");
+    list.classList.remove("hidden"); // Si la liste est cachée et que l'on clic dessus, fait la rotation du chevron vers le haut
     chevronIcon.classList.remove("rotate-0");
     chevronIcon.classList.add("rotate-180");
+    miniSearchBar.style.display = "block"; // Affiche la barre de recherche dans la liste
   } else {
-    list.classList.add("hidden");
+    list.classList.add("hidden"); // Si la liste est apparente et que l'on clic dessus, fait la rotation du chevron vers le bas
     chevronIcon.classList.remove("rotate-180");
     chevronIcon.classList.add("rotate-0");
+    miniSearchBar.style.display = "none"; // Masque la barre de recherche dans la liste
   }
 
   isRotated = !isRotated;
@@ -287,7 +290,6 @@ appliancesOptions.forEach((appliance) => {
 
 // Affiche l'élément sélectionné dans la barre de recherche pour Ustensils
 const ustensilsOptions = ustensilsOptionsList.querySelectorAll("li");
-
 ustensilsOptions.forEach((ustensil) => {
   ustensil.addEventListener("click", function () {
     const selectedUstensil = this.textContent;
@@ -296,3 +298,8 @@ ustensilsOptions.forEach((ustensil) => {
     ustensilsOptionsList.classList.add("hidden");
   });
 });
+
+// Sélectionne les éléments de la liste des ingrédients, appareils & ustensils
+const ingredientsFilter = document.querySelector(".filter-ingredients");
+const appliancesFilter = document.querySelector(".filter-appliances");
+const ustensilsFilter = document.querySelector(".filter-ustensils");
