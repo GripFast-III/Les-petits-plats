@@ -7,9 +7,9 @@ async function getRecipes() {
       const recipes = recipesData.recipes; // Appel la fonction qui récupère les ingrédients, appareils et ustensiles
       const [uniqueIngredients, uniqueAppliances, uniqueUstensils] =
         await getUniqueStuff(recipes);
-      console.log("Ingrédients uniques:", uniqueIngredients);
-      console.log("Appareils uniques:", uniqueAppliances);
-      console.log("Ustensils uniques:", uniqueUstensils);
+      //console.log("Ingrédients uniques:", uniqueIngredients);
+      //console.log("Appareils uniques:", uniqueAppliances);
+      //console.log("Ustensils uniques:", uniqueUstensils);
 
       displayList(uniqueIngredients, "options-list-ingredients");
       displayList(uniqueAppliances, "options-list-appliances");
@@ -126,7 +126,7 @@ async function displayRecipes() {
     // Met à jour le nombre total de recettes dans la <div class="recipes-amount" id="total-recipes">
     totalRecipesElement.textContent = `${recipes.length} recettes`;
   } catch (error) {
-    console.error("Erreur lors de l'affichage des recettes:", error);
+    //console.error("Erreur lors de l'affichage des recettes:", error);
   }
 }
 
@@ -135,7 +135,7 @@ displayRecipes();
 
 // Sélectionne tous les en-têtes de filtres et leurs listes correspondantes
 const filterHeaders = document.querySelectorAll(".filter-list");
-const filterLists = document.querySelectorAll(".options-list");
+const filterLists = document.querySelectorAll(".options-list"); // Liste <ul>
 
 let isRotated = false;
 
@@ -143,25 +143,30 @@ let isRotated = false;
 function toggleList(header, list) {
   const chevronIcon = header.querySelector(".fa-solid.fa-chevron-down");
   const miniSearchBar = header.querySelector(".mini-searchbar");
+  let targetHeader = header.querySelector(".selected-option");
+  let isOpen = targetHeader.getAttribute("aria-expanded");
+  console.log("🚀 ~ file: index.js:148 ~ toggleList ~ isOpen:", typeof isOpen);
 
-  if (!isRotated) {
+  if (isOpen === "false") {
+    // ---> Convertir isOpen === "false" en booléen
+    targetHeader.setAttribute("aria-expanded", true);
     list.classList.remove("hidden"); // Si la liste est cachée et que l'on clic dessus, rotation du chevron vers le haut
     chevronIcon.classList.remove("rotate-0");
     chevronIcon.classList.add("rotate-180");
     miniSearchBar.style.display = "flex"; // Affiche la barre de recherche dans la liste
   } else {
-    list.classList.add("hidden"); // Si la liste est apparente et que l'on clic dessus, rotation du chevron vers le bas
+    targetHeader.setAttribute("aria-expanded", false);
+    list.classList.add("hidden"); // Si la liste est visible et que l'on clic dessus, rotation du chevron vers le bas
     chevronIcon.classList.remove("rotate-180");
     chevronIcon.classList.add("rotate-0");
     miniSearchBar.style.display = "none"; // Masque la barre de recherche dans la liste
   }
-
-  isRotated = !isRotated;
 }
 
 // Ajoute un gestionnaire d'événement de clic à chaque en-tête de filtre
 filterHeaders.forEach((header, index) => {
-  header.addEventListener("click", () => {
+  let targetHeader = header.querySelector(".selected-option");
+  targetHeader.addEventListener("click", () => {
     const filterList = filterLists[index];
     toggleList(header, filterList);
   });
@@ -169,7 +174,7 @@ filterHeaders.forEach((header, index) => {
 
 getRecipes()
   .then((data) => {
-    console.log("🚀 ~ file: index.js:20 ~ .then ~ data:", data);
+    //console.log("🚀 ~ file: index.js:20 ~ .then ~ data:", data);
     data.forEach((recipe) => console.log(recipe));
   })
   .catch((err) => {
@@ -179,7 +184,7 @@ getRecipes()
 const displayList = (source, target) => {
   let targetHtml = document.getElementById(target);
   let existingItems = Array.from(targetHtml.querySelectorAll("li"));
-  console.log(
+  /*console.log(
     "🚀 ~ file: index.js:177 ~ displayList ~ targetHtml:",
     targetHtml
   );
@@ -187,6 +192,7 @@ const displayList = (source, target) => {
     "🚀 ~ file: index.js:179 ~ displayList ~ existingItems:",
     existingItems
   );
+  */
 
   source.forEach((item) => {
     if (!existingItems.some((li) => li.textContent === item)) {
@@ -308,39 +314,3 @@ const ustensilsFilter = document.querySelector(".filter-ustensils");
 // Code à mettre ici
 // Sélectionnez la section des tags
 const tagsSection = document.querySelector(".tags");
-
-// Sélectionnez tous les éléments de la liste Ingrédients (les <li>)
-const ingredientItems = ingredientsList.querySelectorAll("li");
-
-// Ajoutez un gestionnaire d'événements de clic à chaque élément de la liste Ingrédients
-ingredientItems.forEach((ingredientItem) => {
-  ingredientItem.addEventListener("click", function (event) {
-    // Empêchez la propagation de l'événement de clic pour éviter la fermeture de la liste
-    event.stopPropagation();
-
-    // Récupérez le texte de l'élément cliqué (l'ingrédient sélectionné)
-    const selectedIngredientText = this.textContent;
-
-    // Créez un élément de tag avec le texte de l'ingrédient
-    const tagElement = document.createElement("div");
-    tagElement.classList.add("tag");
-    tagElement.textContent = selectedIngredientText;
-
-    // Ajoutez le tag à la section des tags
-    tagsSection.appendChild(tagElement);
-
-    // Réinitialisez la liste Ingrédients après avoir sélectionné un élément
-    ingredientsList.classList.add("hidden");
-    isRotated = false;
-
-    // Réinitialisez la rotation du chevron et masquez la mini-searchbar
-    const chevronIcon = ingredientsFilterHeader.querySelector(
-      ".fa-solid.fa-chevron-down"
-    );
-    const miniSearchBar =
-      ingredientsFilterHeader.querySelector(".mini-searchbar");
-    chevronIcon.classList.remove("rotate-180");
-    chevronIcon.classList.add("rotate-0");
-    miniSearchBar.style.display = "none";
-  });
-});
