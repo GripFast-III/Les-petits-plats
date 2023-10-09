@@ -198,7 +198,7 @@ const displayList = (source, target) => {
   });
 };
 
-// Fonction qui permet de "jouer" avec les filtres dans la sélection concernée
+// Fonction qui permet d'ouvrir/fermer la liste des éléments dans les filtres concernés
 // Sélections des barres de recherche Ingrédients, Appareils et Ustensils
 const ingredientsSearchInput = document.querySelector(
   ".filter-ingredients .search-input"
@@ -266,7 +266,6 @@ ustensilsSearchInput.addEventListener("input", function () {
 
 // Affiche l'élément sélectionné dans la barre de recherche pour Ingrédients
 const ingredientsOptions = ingredientsOptionsList.querySelectorAll("li");
-
 ingredientsOptions.forEach((ingredient) => {
   ingredient.addEventListener("click", function () {
     const selectedIngredient = this.textContent;
@@ -278,7 +277,6 @@ ingredientsOptions.forEach((ingredient) => {
 
 // Affiche l'élément sélectionné dans la barre de recherche pour Appareils
 const appliancesOptions = appliancesOptionsList.querySelectorAll("li");
-
 appliancesOptions.forEach((appliance) => {
   appliance.addEventListener("click", function () {
     const selectedAppliance = this.textContent;
@@ -299,7 +297,12 @@ ustensilsOptions.forEach((ustensil) => {
   });
 });
 
+/*
 // Sélectionne les éléments de la liste des ingrédients, appareils & ustensils
 const ingredientsFilter = document.querySelector(".filter-ingredients");
 const appliancesFilter = document.querySelector(".filter-appliances");
 const ustensilsFilter = document.querySelector(".filter-ustensils");
+*/
+
+// Faire apparaître les tags après une sélection de filtre
+// Code à mettre ici
