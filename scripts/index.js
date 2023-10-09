@@ -145,12 +145,12 @@ function toggleList(header, list) {
   const miniSearchBar = header.querySelector(".mini-searchbar");
 
   if (!isRotated) {
-    list.classList.remove("hidden"); // Si la liste est cachée et que l'on clic dessus, fait la rotation du chevron vers le haut
+    list.classList.remove("hidden"); // Si la liste est cachée et que l'on clic dessus, rotation du chevron vers le haut
     chevronIcon.classList.remove("rotate-0");
     chevronIcon.classList.add("rotate-180");
-    miniSearchBar.style.display = "block"; // Affiche la barre de recherche dans la liste
+    miniSearchBar.style.display = "flex"; // Affiche la barre de recherche dans la liste
   } else {
-    list.classList.add("hidden"); // Si la liste est apparente et que l'on clic dessus, fait la rotation du chevron vers le bas
+    list.classList.add("hidden"); // Si la liste est apparente et que l'on clic dessus, rotation du chevron vers le bas
     chevronIcon.classList.remove("rotate-180");
     chevronIcon.classList.add("rotate-0");
     miniSearchBar.style.display = "none"; // Masque la barre de recherche dans la liste
@@ -306,3 +306,41 @@ const ustensilsFilter = document.querySelector(".filter-ustensils");
 
 // Faire apparaître les tags après une sélection de filtre
 // Code à mettre ici
+// Sélectionnez la section des tags
+const tagsSection = document.querySelector(".tags");
+
+// Sélectionnez tous les éléments de la liste Ingrédients (les <li>)
+const ingredientItems = ingredientsList.querySelectorAll("li");
+
+// Ajoutez un gestionnaire d'événements de clic à chaque élément de la liste Ingrédients
+ingredientItems.forEach((ingredientItem) => {
+  ingredientItem.addEventListener("click", function (event) {
+    // Empêchez la propagation de l'événement de clic pour éviter la fermeture de la liste
+    event.stopPropagation();
+
+    // Récupérez le texte de l'élément cliqué (l'ingrédient sélectionné)
+    const selectedIngredientText = this.textContent;
+
+    // Créez un élément de tag avec le texte de l'ingrédient
+    const tagElement = document.createElement("div");
+    tagElement.classList.add("tag");
+    tagElement.textContent = selectedIngredientText;
+
+    // Ajoutez le tag à la section des tags
+    tagsSection.appendChild(tagElement);
+
+    // Réinitialisez la liste Ingrédients après avoir sélectionné un élément
+    ingredientsList.classList.add("hidden");
+    isRotated = false;
+
+    // Réinitialisez la rotation du chevron et masquez la mini-searchbar
+    const chevronIcon = ingredientsFilterHeader.querySelector(
+      ".fa-solid.fa-chevron-down"
+    );
+    const miniSearchBar =
+      ingredientsFilterHeader.querySelector(".mini-searchbar");
+    chevronIcon.classList.remove("rotate-180");
+    chevronIcon.classList.add("rotate-0");
+    miniSearchBar.style.display = "none";
+  });
+});
