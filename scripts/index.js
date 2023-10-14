@@ -161,6 +161,17 @@ function toggleList(header, list) {
     chevronIcon.classList.add("rotate-0");
     miniSearchBar.style.display = "none"; // Masque la barre de recherche dans la liste
   }
+
+  // Ajoute un gestionnaire de clic pour fermer la liste si on clique en dehors de la liste
+  document.addEventListener("click", (event) => {
+    if (event.target.closest(".filter-list") !== header) {
+      list.classList.add("hidden"); // Ferme la liste
+      // Réinitialise le chevron
+      chevronIcon.classList.remove("rotate-180");
+      chevronIcon.classList.add("rotate-0");
+      miniSearchBar.style.display = "none"; // Masque la barre de recherche
+    }
+  });
 }
 
 // Ajoute un gestionnaire d'événement de clic à chaque en-tête de filtre
@@ -303,14 +314,123 @@ ustensilsOptions.forEach((ustensil) => {
   });
 });
 
-/*
-// Sélectionne les éléments de la liste des ingrédients, appareils & ustensils
-const ingredientsFilter = document.querySelector(".filter-ingredients");
-const appliancesFilter = document.querySelector(".filter-appliances");
-const ustensilsFilter = document.querySelector(".filter-ustensils");
-*/
-
-// Faire apparaître les tags après une sélection de filtre
-// Code à mettre ici
-// Sélectionnez la section des tags
+// Fait apparaître les tags après une sélection de filtre
+// Sélection de la section des tags
 const tagsSection = document.querySelector(".tags");
+
+// Sélection des éléments pour les trois listes
+const ingredientsList = document.querySelector("#options-list-ingredients");
+const appliancesList = document.querySelector("#options-list-appliances");
+const ustensilsList = document.querySelector("#options-list-ustensils");
+
+// Sélectionne les éléments de tag dans la section "tags"
+const ingredientsTagDiv = document.querySelector(".tag-ingredients");
+const appliancesTagDiv = document.querySelector(".tag-appliances");
+const ustensilsTagDiv = document.querySelector(".tag-ustensils");
+
+ingredientsList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    const selectedIngredient = event.target.textContent;
+    const capitalizedIngredient = capitalizeFirstLetter(selectedIngredient);
+    addTag(ingredientsTagDiv, capitalizedIngredient);
+
+    // Ferme la liste des ingrédients
+    ingredientsList.classList.add("hidden");
+
+    // Réinitialise le chevron
+    const ingredientsHeader = document.querySelector(
+      ".filter-ingredients .selected-option"
+    );
+    const chevronIcon = ingredientsHeader.querySelector(
+      ".fa-solid.fa-chevron-down"
+    );
+    chevronIcon.classList.remove("rotate-180");
+    chevronIcon.classList.add("rotate-0");
+
+    // Masque la barre de recherche des ingrédients
+    const miniSearchBar = ingredientsHeader.querySelector(".mini-searchbar");
+    miniSearchBar.style.display = "none";
+  }
+});
+
+appliancesList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    const selectedAppliance = event.target.textContent;
+    const capitalizAppliance = capitalizeFirstLetter(selectedAppliance);
+
+    addTag(appliancesTagDiv, capitalizAppliance);
+
+    // Ferme la liste des appareils
+    appliancesList.classList.add("hidden");
+
+    // Réinitialise le chevron des appareils
+    const appliancesHeader = document.querySelector(
+      ".filter-appliances .selected-option"
+    );
+    const chevronIcon = appliancesHeader.querySelector(
+      ".fa-solid.fa-chevron-down"
+    );
+    chevronIcon.classList.remove("rotate-180");
+    chevronIcon.classList.add("rotate-0");
+
+    // Masque la barre de recherche des appareils
+    const miniSearchBar = appliancesHeader.querySelector(".mini-searchbar");
+    miniSearchBar.style.display = "none";
+  }
+});
+
+ustensilsList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    const selectedUstensil = event.target.textContent;
+    const capitalizUstensil = capitalizeFirstLetter(selectedUstensil);
+    addTag(ustensilsTagDiv, capitalizUstensil);
+
+    // Ferme la liste des ustensiles
+    ustensilsList.classList.add("hidden");
+
+    // Réinitialise le chevron des ustensiles
+    const ustensilsHeader = document.querySelector(
+      ".filter-ustensils .selected-option"
+    );
+    const chevronIcon = ustensilsHeader.querySelector(
+      ".fa-solid.fa-chevron-down"
+    );
+    chevronIcon.classList.remove("rotate-180");
+    chevronIcon.classList.add("rotate-0");
+
+    // Masque la barre de recherche des ustensiles
+    const miniSearchBar = ustensilsHeader.querySelector(".mini-searchbar");
+    miniSearchBar.style.display = "none";
+  }
+});
+
+// Ajout du tag dans la section des tags
+function addTag(tagsSection, tagName) {
+  const tag = document.createElement("div");
+  tag.textContent = tagName;
+  tag.classList.add("tag-box");
+  tagsSection.appendChild(tag);
+
+  // Ajoute la petite croix
+  const closeIcon = document.createElement("span");
+  closeIcon.classList.add("tag-close");
+  closeIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+  tag.appendChild(closeIcon);
+
+  // Ajoute un gestionnaire d'événement pour supprimer le tag lorsqu'on clique sur la croix
+  closeIcon.addEventListener("click", () => {
+    tagsSection.removeChild(tag);
+  });
+}
+
+// Fait mettre une lettre majuscule à la première lettre du mot clé
+function capitalizeFirstLetter(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function isTagAlreadyAdded(tagsSection, tagName) {
+  const existingTags = tagsSection.querySelectorAll("span");
+  return Array.from(existingTags).some(
+    (tag) => tag.textContent === tagName && !tag.classList.contains("tag-close")
+  );
+}

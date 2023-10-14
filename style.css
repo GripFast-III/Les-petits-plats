@@ -239,6 +239,40 @@ h3, .options-list {
     flex-direction: row;
     height: 60px;
     margin-bottom: 20px;
+    margin-left: 5px;
+    justify-content: space-between;
+    width: 50%;
+    .tag-box {
+        display: flex;
+        justify-content: space-between;
+        width: 130px;
+        background-color: #FFD15B;
+        padding: 10px;
+        border-radius: 10px;
+    }
+}
+
+.tag-ingredients{
+    position: absolute;
+    left: 37px;
+}
+
+.tag-appliances{
+    position: absolute;
+    left: 275px;
+}
+
+.tag-ustensils {
+    position: absolute;
+    left: 513px;
+}
+
+.fa-xmark {
+    color : #1B1B1B;
+}
+
+.fa-xmark:hover {
+    cursor: pointer;
 }
 
 .recipes-cards {
