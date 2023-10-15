@@ -1,3 +1,6 @@
+// Copie la liste complète de recettes
+let allRecipes = [];
+
 // Récupère les recettes depuis le fichier recipes.json
 async function getRecipes() {
   try {
@@ -14,6 +17,8 @@ async function getRecipes() {
       displayList(uniqueIngredients, "options-list-ingredients");
       displayList(uniqueAppliances, "options-list-appliances");
       displayList(uniqueUstensils, "options-list-ustensils");
+
+      allRecipes = recipesData.recipes; // Stock toutes les recettes dans "allRecipes"
 
       return recipes;
     } else {
@@ -147,8 +152,13 @@ function toggleList(header, list) {
   let isOpen = targetHeader.getAttribute("aria-expanded");
   console.log("🚀 ~ file: index.js:148 ~ toggleList ~ isOpen:", typeof isOpen);
 
-  if (isOpen === "false") {
-    // ---> Convertir isOpen === "false" en booléen
+  isOpen = JSON.parse(isOpen); // Convertit "isOpen" en booléen
+
+  if (!isOpen) {
+    console.log(
+      "🚀 ~ file: index.js:153 ~ toggleList ~ isOpen:",
+      typeof isOpen
+    );
     targetHeader.setAttribute("aria-expanded", true);
     list.classList.remove("hidden"); // Si la liste est cachée et que l'on clic dessus, rotation du chevron vers le haut
     chevronIcon.classList.remove("rotate-0");
@@ -210,6 +220,7 @@ const displayList = (source, target) => {
       // Si les éléments dans le li existent déjà, cela évite de créer des doublons
       const liHtml = document.createElement("li");
       liHtml.textContent = item;
+
       targetHtml.append(liHtml);
     }
   });
@@ -328,90 +339,14 @@ const ingredientsTagDiv = document.querySelector(".tag-ingredients");
 const appliancesTagDiv = document.querySelector(".tag-appliances");
 const ustensilsTagDiv = document.querySelector(".tag-ustensils");
 
-ingredientsList.addEventListener("click", (event) => {
-  if (event.target.tagName === "LI") {
-    const selectedIngredient = event.target.textContent;
-    const capitalizedIngredient = capitalizeFirstLetter(selectedIngredient);
-    addTag(ingredientsTagDiv, capitalizedIngredient);
-
-    // Ferme la liste des ingrédients
-    ingredientsList.classList.add("hidden");
-
-    // Réinitialise le chevron
-    const ingredientsHeader = document.querySelector(
-      ".filter-ingredients .selected-option"
-    );
-    const chevronIcon = ingredientsHeader.querySelector(
-      ".fa-solid.fa-chevron-down"
-    );
-    chevronIcon.classList.remove("rotate-180");
-    chevronIcon.classList.add("rotate-0");
-
-    // Masque la barre de recherche des ingrédients
-    const miniSearchBar = ingredientsHeader.querySelector(".mini-searchbar");
-    miniSearchBar.style.display = "none";
-  }
-});
-
-appliancesList.addEventListener("click", (event) => {
-  if (event.target.tagName === "LI") {
-    const selectedAppliance = event.target.textContent;
-    const capitalizAppliance = capitalizeFirstLetter(selectedAppliance);
-
-    addTag(appliancesTagDiv, capitalizAppliance);
-
-    // Ferme la liste des appareils
-    appliancesList.classList.add("hidden");
-
-    // Réinitialise le chevron des appareils
-    const appliancesHeader = document.querySelector(
-      ".filter-appliances .selected-option"
-    );
-    const chevronIcon = appliancesHeader.querySelector(
-      ".fa-solid.fa-chevron-down"
-    );
-    chevronIcon.classList.remove("rotate-180");
-    chevronIcon.classList.add("rotate-0");
-
-    // Masque la barre de recherche des appareils
-    const miniSearchBar = appliancesHeader.querySelector(".mini-searchbar");
-    miniSearchBar.style.display = "none";
-  }
-});
-
-ustensilsList.addEventListener("click", (event) => {
-  if (event.target.tagName === "LI") {
-    const selectedUstensil = event.target.textContent;
-    const capitalizUstensil = capitalizeFirstLetter(selectedUstensil);
-    addTag(ustensilsTagDiv, capitalizUstensil);
-
-    // Ferme la liste des ustensiles
-    ustensilsList.classList.add("hidden");
-
-    // Réinitialise le chevron des ustensiles
-    const ustensilsHeader = document.querySelector(
-      ".filter-ustensils .selected-option"
-    );
-    const chevronIcon = ustensilsHeader.querySelector(
-      ".fa-solid.fa-chevron-down"
-    );
-    chevronIcon.classList.remove("rotate-180");
-    chevronIcon.classList.add("rotate-0");
-
-    // Masque la barre de recherche des ustensiles
-    const miniSearchBar = ustensilsHeader.querySelector(".mini-searchbar");
-    miniSearchBar.style.display = "none";
-  }
-});
-
-// Ajout du tag dans la section des tags
+// Fonction qui ajoute le tag dans la section des tags
 function addTag(tagsSection, tagName) {
   const tag = document.createElement("div");
   tag.textContent = tagName;
   tag.classList.add("tag-box");
   tagsSection.appendChild(tag);
 
-  // Ajoute la petite croix
+  // Ajoute la petite croix sur les tags
   const closeIcon = document.createElement("span");
   closeIcon.classList.add("tag-close");
   closeIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -420,17 +355,98 @@ function addTag(tagsSection, tagName) {
   // Ajoute un gestionnaire d'événement pour supprimer le tag lorsqu'on clique sur la croix
   closeIcon.addEventListener("click", () => {
     tagsSection.removeChild(tag);
+
+    // Retire la surbrillance de l'élément correspondant dans la liste si on reclique dessus
+    const ingredientListItems = ingredientsList.querySelectorAll("li");
+    const ingredient = Array.from(ingredientListItems).find(
+      (item) => item.textContent === tagName
+    );
+    if (ingredient) {
+      ingredient.classList.remove("highlighted");
+    }
   });
 }
 
-// Fait mettre une lettre majuscule à la première lettre du mot clé
+// Fonction qui supprime le tag dans la section des tags
+function removeTag(tagsSection, tagName) {
+  const tags = tagsSection.querySelectorAll(".tag-box");
+  for (const tag of tags) {
+    if (tag.textContent === tagName) {
+      tagsSection.removeChild(tag);
+    }
+  }
+}
+
+ingredientsList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    const selectedIngredient = event.target.textContent;
+    const capitalizedIngredient = capitalizeFirstLetter(selectedIngredient);
+
+    // Vérifie si l'élément est déjà en surbrillance
+    if (event.target.classList.contains("highlighted")) {
+      // Retire la surbrillance jaune
+      event.target.classList.remove("highlighted");
+      // Retire l'élément de la section des tags
+      removeTag(ingredientsTagDiv, capitalizedIngredient);
+    } else {
+      // Ajoute la surbrillance jaune
+      event.target.classList.add("highlighted");
+      // Ajoute l'élément à la section des tags
+      addTag(ingredientsTagDiv, capitalizedIngredient);
+    }
+  }
+});
+
+appliancesList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    const selectedAppliance = event.target.textContent;
+    const capitalizedAppliance = capitalizeFirstLetter(selectedAppliance); // Met une majsucule à la première lettre
+    // Vérifie si l'élément est déjà en surbrillance
+    if (event.target.classList.contains("highlighted")) {
+      // Retire la surbrillance jaune
+      event.target.classList.remove("highlighted");
+      // Retire l'élément de la section des tags
+      removeTag(appliancesTagDiv, capitalizedAppliance);
+    } else {
+      // Ajoute la surbrillance jaune
+      event.target.classList.add("highlighted");
+      // Ajoute l'élément à la section des tags
+      addTag(appliancesTagDiv, capitalizedAppliance);
+    }
+  }
+});
+
+ustensilsList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    const selectedUstensil = event.target.textContent;
+    const capitalizedUstensil = capitalizeFirstLetter(selectedUstensil); // Met une majsucule à la première lettre
+
+    // Vérifie si l'élément est déjà en surbrillance
+    if (event.target.classList.contains("highlighted")) {
+      // Retire la surbrillance jaune
+      event.target.classList.remove("highlighted");
+      // Retire l'élément de la section des tags
+      removeTag(ustensilsTagDiv, capitalizedUstensil);
+    } else {
+      // Ajoute la surbrillance jaune
+      event.target.classList.add("highlighted");
+      // Ajoute l'élément à la section des tags
+      addTag(ustensilsTagDiv, capitalizedUstensil);
+    }
+  }
+});
+
+// Fait mettre une lettre majuscule à la première lettre de chaque mot clé
 function capitalizeFirstLetter(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+// Vérifie si un tag avec le même nom figure déjà dans la liste des tags et évite la création de doublon
 function isTagAlreadyAdded(tagsSection, tagName) {
   const existingTags = tagsSection.querySelectorAll("span");
   return Array.from(existingTags).some(
     (tag) => tag.textContent === tagName && !tag.classList.contains("tag-close")
   );
 }
+
+// ----------- Filtrage des recettes

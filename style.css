@@ -176,6 +176,10 @@ h1 {
     display: none;
 }
 
+.highlighted {
+    background-color: #FFD15B;
+  }
+
 .rotate-180 {
     transform: rotate(180deg);
     transition: transform 0.3s ease;
@@ -237,34 +241,59 @@ h3, .options-list {
 .tags {
     display: flex;
     flex-direction: row;
-    height: 60px;
     margin-bottom: 20px;
     margin-left: 5px;
     justify-content: space-between;
-    width: 50%;
+    width: 620px;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
     .tag-box {
         display: flex;
         justify-content: space-between;
-        width: 130px;
+        align-items: center;
         background-color: #FFD15B;
         padding: 10px;
         border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        width: 100%;
+        max-height: 100%;
+        max-width: 135px;
+        min-height: 20px;
     }
 }
 
 .tag-ingredients{
-    position: absolute;
-    left: 37px;
+    /*position: inherit;
+    left: 37px;*/
+
+    display: flex;
+    flex-direction: row;
+    position: initial;
+    gap: 15px;
+    width: 100%;
 }
 
 .tag-appliances{
-    position: absolute;
-    left: 275px;
+    /*position: inherit;
+    left: 275px;*/
+
+    display: flex;
+    flex-direction: row;
+    position: initial;
+    gap: 15px;
+    width: 100%;
 }
 
 .tag-ustensils {
-    position: absolute;
-    left: 513px;
+    /*position: inherit;
+    left: 513px;*/
+    display: flex;
+    flex-direction: row;
+    position: initial;
+    gap: 15px;
+    width: 100%;
 }
 
 .fa-xmark {
@@ -369,6 +398,14 @@ li:hover {
 .quantity-unit, .quantity-number {
     color: #7A7A7A;
 }
+
+
+/*.options-list{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    height: 200px;
+}*/
 
 .options-list li {
     margin-bottom: 0px;
