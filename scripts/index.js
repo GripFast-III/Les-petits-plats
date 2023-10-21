@@ -150,15 +150,15 @@ function toggleList(header, list) {
   const miniSearchBar = header.querySelector(".mini-searchbar");
   let targetHeader = header.querySelector(".selected-option");
   let isOpen = targetHeader.getAttribute("aria-expanded");
-  console.log("🚀 ~ file: index.js:148 ~ toggleList ~ isOpen:", typeof isOpen);
+  /*console.log("🚀 ~ file: index.js:148 ~ toggleList ~ isOpen:", typeof isOpen);*/
 
   isOpen = JSON.parse(isOpen); // Convertit "isOpen" en booléen
 
   if (!isOpen) {
-    console.log(
+    /*console.log(
       "🚀 ~ file: index.js:153 ~ toggleList ~ isOpen:",
       typeof isOpen
-    );
+    );*/
     targetHeader.setAttribute("aria-expanded", true);
     list.classList.remove("hidden"); // Si la liste est cachée et que l'on clic dessus, rotation du chevron vers le haut
     chevronIcon.classList.remove("rotate-0");
@@ -193,58 +193,47 @@ filterHeaders.forEach((header, index) => {
   });
 });
 
-getRecipes()
-  .then((data) => {
-    //console.log("🚀 ~ file: index.js:20 ~ .then ~ data:", data);
-    data.forEach((recipe) => console.log(recipe));
-  })
-  .catch((err) => {
-    console.log("Error", err);
-  });
-
+// Affiche les contenus des listes <ul> dans des <li>
 const displayList = (source, target) => {
   let targetHtml = document.getElementById(target);
   let existingItems = Array.from(targetHtml.querySelectorAll("li"));
-  /*console.log(
-    "🚀 ~ file: index.js:177 ~ displayList ~ targetHtml:",
-    targetHtml
-  );
-  console.log(
-    "🚀 ~ file: index.js:179 ~ displayList ~ existingItems:",
-    existingItems
-  );
-  */
 
   source.forEach((item) => {
     if (!existingItems.some((li) => li.textContent === item)) {
       // Si les éléments dans le li existent déjà, cela évite de créer des doublons
       const liHtml = document.createElement("li");
-      liHtml.textContent = item;
+      liHtml.dataset.itemSelect = `${target}-${item}`;
+      liHtml.innerHTML = `${item} <span class="selected-cross"><i class="fa-solid fa-xmark"></i></span>`;
 
       targetHtml.append(liHtml);
     }
   });
 };
 
-// Fonction qui permet d'ouvrir/fermer la liste des éléments dans les filtres concernés
-// Sélections des barres de recherche Ingrédients, Appareils et Ustensils
+// Fonctions qui permettent d'ouvrir/fermer la liste des éléments dans les filtres concernés
+// Sélections de la barres de recherche des Ingrédients
 const ingredientsSearchInput = document.querySelector(
   ".filter-ingredients .search-input"
 );
+// Sélection de la liste des Ingrédients
 const ingredientsOptionsList = document.querySelector(
   "#options-list-ingredients"
 );
 
+// Sélections de la barres de recherche des Appareils
 const appliancesSearchInput = document.querySelector(
   ".filter-appliances .search-input"
 );
+// Sélection de la liste des Appareils
 const appliancesOptionsList = document.querySelector(
   "#options-list-appliances"
 );
 
+// Sélections de la barres de recherche des Ustensils
 const ustensilsSearchInput = document.querySelector(
   ".filter-ustensils .search-input"
 );
+// Sélection de la liste des Ustensiles
 const ustensilsOptionsList = document.querySelector("#options-list-ustensils");
 
 // Gestion de l'événement de saisie de texte dans la barre de recherche des Ingrédients
@@ -339,8 +328,21 @@ const ingredientsTagDiv = document.querySelector(".tag-ingredients");
 const appliancesTagDiv = document.querySelector(".tag-appliances");
 const ustensilsTagDiv = document.querySelector(".tag-ustensils");
 
+// Création de l'objet global pour stocker les informations du tag
+let tagData = {
+  type: "",
+  value: "",
+};
 // Fonction qui ajoute le tag dans la section des tags
-function addTag(tagsSection, tagName) {
+function addTag(tagsSection, tagName, type) {
+  /*console.log("🚀 ~ file: index.js:336 ~ addTag ~ tagName:", tagName);
+  console.log("🚀 ~ file: index.js:336 ~ addTag ~ tagsSection:", tagsSection);*/
+
+  // Met à jour les informations de l'objet global
+  tagData.type = type;
+  tagData.value = tagName;
+
+  // Créer le tag dans la section des tags
   const tag = document.createElement("div");
   tag.textContent = tagName;
   tag.classList.add("tag-box");
@@ -348,23 +350,86 @@ function addTag(tagsSection, tagName) {
 
   // Ajoute la petite croix sur les tags
   const closeIcon = document.createElement("span");
+  closeIcon.dataset.type = type;
+  closeIcon.dataset.content = tagName;
   closeIcon.classList.add("tag-close");
   closeIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   tag.appendChild(closeIcon);
 
   // Ajoute un gestionnaire d'événement pour supprimer le tag lorsqu'on clique sur la croix
   closeIcon.addEventListener("click", () => {
-    tagsSection.removeChild(tag);
+    let type = closeIcon.dataset.type;
+    /*console.log(
+      "🚀 ~ file: index.js:355 ~ closeIcon.addEventListener ~ type:",
+      type
+    );*/
+
+    let content = closeIcon.dataset.content;
+    /*console.log(
+      "🚀 ~ file: index.js:357 ~ closeIcon.addEventListener ~ content:",
+      content
+    );
+    console.log(
+      "🚀 ~ file: index.js:374 ~ closeIcon.addEventListener ~ e:",
+      `${type}-${content}`
+    );*/
+
+    // Met à jour la variable globale pour refléter la suppression
+    if (type === "Ingrédients") {
+      // Si c'est un tag "Ingrédients", met à jour la variable globale "allRecipes"
+      allRecipes.forEach((recipe) => {
+        const index = recipe.ingredients.findIndex(
+          (item) => item.ingredient === content
+        );
+        if (index !== -1) {
+          recipe.ingredients.splice(index, 1);
+        }
+      });
+
+      if (type === "Appareils") {
+        allRecipes.forEach((recipe) => {
+          if (recipe.appliance === content) {
+            recipe.appliance = ""; // Met à jour la valeur dans la variable globale
+          }
+        });
+      }
+
+      if (type === "Ustensiles") {
+        allRecipes.forEach((recipe) => {
+          const index = recipe.ustensils.findIndex(
+            (ustensil) => ustensil === content
+          );
+          if (index !== -1) {
+            recipe.ustensils.splice(index, 1); // Supprime l'ustensile de la variable globale
+          }
+        });
+      }
+    }
 
     // Retire la surbrillance de l'élément correspondant dans la liste si on reclique dessus
     const ingredientListItems = ingredientsList.querySelectorAll("li");
     const ingredient = Array.from(ingredientListItems).find(
-      (item) => item.textContent === tagName
+      (item) => item.textContent === /*tagName*/ content
     );
     if (ingredient) {
       ingredient.classList.remove("highlighted");
     }
+
+    // Supprime le tag du DOM
+    tagsSection.removeChild(tag);
+
+    // Réinitialise les informations de l'objet global si le tag est supprimé
+    if (tagData.type === type && tagData.value === content) {
+      tagData.type = "";
+      tagData.value = "";
+    }
+
+    // Affiche les informations du tag supprimé dans la console
+    console.log("Tag supprimé - Type:", type, "Valeur:", content);
   });
+
+  // Affiche les informations du tag ajouté dans la console
+  console.log("Tag ajouté - Type:", type, "Valeur:", tagName);
 }
 
 // Fonction qui supprime le tag dans la section des tags
@@ -392,7 +457,7 @@ ingredientsList.addEventListener("click", (event) => {
       // Ajoute la surbrillance jaune
       event.target.classList.add("highlighted");
       // Ajoute l'élément à la section des tags
-      addTag(ingredientsTagDiv, capitalizedIngredient);
+      addTag(ingredientsTagDiv, capitalizedIngredient, "Ingredient");
     }
   }
 });
@@ -411,7 +476,7 @@ appliancesList.addEventListener("click", (event) => {
       // Ajoute la surbrillance jaune
       event.target.classList.add("highlighted");
       // Ajoute l'élément à la section des tags
-      addTag(appliancesTagDiv, capitalizedAppliance);
+      addTag(appliancesTagDiv, capitalizedAppliance, "Appliance");
     }
   }
 });
@@ -431,7 +496,7 @@ ustensilsList.addEventListener("click", (event) => {
       // Ajoute la surbrillance jaune
       event.target.classList.add("highlighted");
       // Ajoute l'élément à la section des tags
-      addTag(ustensilsTagDiv, capitalizedUstensil);
+      addTag(ustensilsTagDiv, capitalizedUstensil, "Ustensils");
     }
   }
 });
@@ -448,5 +513,20 @@ function isTagAlreadyAdded(tagsSection, tagName) {
     (tag) => tag.textContent === tagName && !tag.classList.contains("tag-close")
   );
 }
+
+// Sélectionnez tous les éléments fa-circle-xmark
+const circleXmarks = document.querySelectorAll(".fa-circle-xmark");
+
+// Ajoutez un gestionnaire d'événements clic à chaque icône fa-circle-xmark
+circleXmarks.forEach((circleXmark) => {
+  circleXmark.addEventListener("click", function () {
+    // Trouvez l'élément parent li en utilisant closest
+    const listItem = circleXmark.closest("li");
+    if (listItem) {
+      // Retirez la classe "highlighted" de l'élément li
+      listItem.classList.remove("highlighted");
+    }
+  });
+});
 
 // ----------- Filtrage des recettes

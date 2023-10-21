@@ -122,7 +122,12 @@ h1 {
 
 .fa-solid {
     color: white;
-    font-size: 140%;
+    font-size: 100%;
+}
+
+.fa-solid:hover{
+    color: #FFD15B;
+    transition: 0.3s
 }
 
 .filtersAndRecipes-amount{
@@ -177,6 +182,12 @@ h1 {
 }
 
 .highlighted {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: capitalize;
+    padding: 12px;
+    margin-bottom: 0px;
     background-color: #FFD15B;
   }
 
@@ -208,6 +219,9 @@ h1 {
     gap: 1rem;
     padding-left: 10px;
     padding-right: 10px;
+    .fa-solid {
+        color: black;
+    }
 }
 
 .fa-chevron-down {
@@ -302,7 +316,23 @@ h3, .options-list {
 
 .fa-xmark:hover {
     cursor: pointer;
+    color: black;
 }
+
+/* normalement prévu pour <i class="fa-solid fa-circle-xmark"></i>
+.selected-cross .fa-circle-xmark {
+    display: none;
+}
+
+.selected-cross:hover .fa-xmark {
+    display: none;
+}
+
+.selected-cross:hover .fa-circle-xmark {
+    display: inline;
+    color: black;
+}
+*/
 
 .recipes-cards {
     display: flex;
@@ -421,3 +451,12 @@ li:hover {
 .options-list li::first-letter {
     text-transform: uppercase;
 }
+
+.selected-cross {
+    display: none;
+}
+
+.highlighted > .selected-cross {
+    display: inline-block;
+}
+
