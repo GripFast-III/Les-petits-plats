@@ -1,6 +1,13 @@
 // Copie la liste complète de recettes
 let allRecipes = [];
 
+let query = {
+  inputValue: "",
+  ingredients: [],
+  appliances: [],
+  ustensils: [],
+};
+
 // Récupère les recettes depuis le fichier recipes.json
 async function getRecipes() {
   try {
@@ -335,9 +342,6 @@ let tagData = {
 };
 // Fonction qui ajoute le tag dans la section des tags
 function addTag(tagsSection, tagName, type) {
-  /*console.log("🚀 ~ file: index.js:336 ~ addTag ~ tagName:", tagName);
-  console.log("🚀 ~ file: index.js:336 ~ addTag ~ tagsSection:", tagsSection);*/
-
   // Met à jour les informations de l'objet global
   tagData.type = type;
   tagData.value = tagName;
@@ -355,6 +359,55 @@ function addTag(tagsSection, tagName, type) {
   closeIcon.classList.add("tag-close");
   closeIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   tag.appendChild(closeIcon);
+
+  console.log("🚀 ~ file: index.js:364 ~ addTag ~ type:", type);
+  if (type === "Ingredient") {
+    // Si c'est un tag "Ingrédients", met à jour la variable globale "allRecipes"
+    const index = query.ingredients.findIndex((item) => item === tagName);
+    if (index !== -1) {
+      query.ingredients.splice(index, 1);
+    } else {
+      query.ingredients.push(tagName);
+    }
+    console.log(
+      "🚀 ~ file: index.js:370 ~ closeIcon.addEventListener ~ query.ingredients:",
+      query.ingredients
+    );
+
+    if (type === "Appareils") {
+      allRecipes.forEach((recipe) => {
+        if (recipe.appliance === content) {
+          recipe.appliance = ""; // Met à jour la valeur dans la variable globale
+        }
+      });
+    }
+
+    /*
+    if (type === "Ustensiles") {
+      allRecipes.forEach((recipe) => {
+        const index = recipe.ustensils.findIndex(
+          (ustensil) => ustensil === content
+        );
+        if (index !== -1) {
+          recipe.ustensils.splice(index, 1); // Supprime l'ustensile de la variable globale
+        }
+      });
+    }
+    */
+
+    if (type === "Ustensiles") {
+      const index = query.ustensils.findIndex((item) => item === tagName);
+      if (index !== -1) {
+        query.ustensils.splice(index, 1);
+      } else {
+        query.ustensils.push(tagName);
+      }
+      console.log(
+        "🚀 ~ file: index.js:370 ~ closeIcon.addEventListener ~ query.ustensils:",
+        query.ustensils
+      );
+    }
+  }
 
   // Ajoute un gestionnaire d'événement pour supprimer le tag lorsqu'on clique sur la croix
   closeIcon.addEventListener("click", () => {
@@ -375,16 +428,18 @@ function addTag(tagsSection, tagName, type) {
     );*/
 
     // Met à jour la variable globale pour refléter la suppression
-    if (type === "Ingrédients") {
+    if (type === "Ingredient") {
       // Si c'est un tag "Ingrédients", met à jour la variable globale "allRecipes"
-      allRecipes.forEach((recipe) => {
-        const index = recipe.ingredients.findIndex(
-          (item) => item.ingredient === content
-        );
-        if (index !== -1) {
-          recipe.ingredients.splice(index, 1);
-        }
-      });
+      const index = query.ingredients.findIndex((item) => item === content);
+      if (index !== -1) {
+        query.ingredients.splice(index, 1);
+      } else {
+        query.ingredients.push(content);
+      }
+      console.log(
+        "🚀 ~ file: index.js:392 ~ closeIcon.addEventListener ~ query.ingredients:",
+        query.ingredients
+      );
 
       if (type === "Appareils") {
         allRecipes.forEach((recipe) => {
