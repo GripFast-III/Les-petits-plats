@@ -209,7 +209,7 @@ const displayList = (source, target) => {
     if (!existingItems.some((li) => li.textContent === item)) {
       // Si les éléments dans le li existent déjà, cela évite de créer des doublons
       const liHtml = document.createElement("li");
-      liHtml.dataset.itemSelect = `${target}-${item}`;
+      liHtml.dataset.itemSelect = `${target} ${item}`;
       liHtml.innerHTML = `${item} <span class="selected-cross"><i class="fa-solid fa-xmark"></i></span>`;
 
       targetHtml.append(liHtml);
@@ -331,9 +331,9 @@ const appliancesList = document.querySelector("#options-list-appliances");
 const ustensilsList = document.querySelector("#options-list-ustensils");
 
 // Sélectionne les éléments de tag dans la section "tags"
-const ingredientsTagDiv = document.querySelector(".tag-ingredients");
-const appliancesTagDiv = document.querySelector(".tag-appliances");
-const ustensilsTagDiv = document.querySelector(".tag-ustensils");
+const ingredientsTagDiv = document.querySelector(".tags");
+const appliancesTagDiv = document.querySelector(".tags");
+const ustensilsTagDiv = document.querySelector(".tag");
 
 // Création de l'objet global pour stocker les informations du tag
 let tagData = {
@@ -351,6 +351,13 @@ function addTag(tagsSection, tagName, type) {
   const tag = document.createElement("div");
   tag.textContent = tagName;
   tag.classList.add("tag-box");
+  if (type === "ingredients") {
+    tagsSection = ingredientsTagDiv;
+  } else if (type === "appliance") {
+    tagsSection = appliancesTagDiv;
+  } else if (type === "ustensils") {
+    tagsSection = ustensilsTagDiv;
+  }
   tagsSection.appendChild(tag);
 
   // Ajoute la petite croix sur les tags
@@ -361,65 +368,99 @@ function addTag(tagsSection, tagName, type) {
   closeIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   tag.appendChild(closeIcon);
 
-  console.log("🚀 ~ file: index.js:364 ~ addTag ~ type:", type);
-  if (type === "Ingredient") {
-    // Si c'est un tag "Ingrédients", met à jour la variable globale "allRecipes"
-    const index = query.ingredients.findIndex((item) => item === tagName);
+  /*---------------------------------------------------------------------------
+  // Fonction pour mettre à jour la variable globale en fonction du type
+  function updateGlobalVariable(type, content) {
+    const index = query[type].findIndex((item) => item === content);
     if (index !== -1) {
-      query.ingredients.splice(index, 1);
+      let liToRemove = document.querySelector(
+        `li[data-item-select="options-list-${type} ${content}"]`
+      );
+      if (liToRemove) {
+        liToRemove.classList.remove("highlighted");
+      }
+      query[type].splice(index, 1);
     } else {
-      query.ingredients.push(tagName);
+      query[type].push(content);
+    }
+    console.log(
+      `🚀 ~ file: index.js:372 ~ addTag ~ query.${type}:`,
+      query[type]
+    );
+  }
+
+  if (type === "ingredients") {
+  updateGlobalVariable(type, content);
+  }
+
+  if (type === "appliance") {
+    updateGlobalVariable(type, content);
+  }
+
+  if (type === "ustensils") {
+    updateGlobalVariable(type, content);
+  }
+
+  ---------------------------------------------------------------------------*/
+
+  console.log("🚀 ~ file: index.js:364 ~ addTag ~ type:", type);
+  if (type === "ingredients") {
+    // Si c'est un tag "Ingrédients", met à jour la variable globale "allRecipes"
+    const index = query[type].findIndex((item) => item === tagName);
+    if (index !== -1) {
+      let liToRemove = document.querySelector(
+        `li[data-item-select="options-list-${type} ${tagName}"]`
+      );
+      console.log("🚀 ~ file: index.js:372 ~ addTag ~ liToRemove:", liToRemove);
+      query[type].splice(index, 1);
+    } else {
+      query[type].push(tagName);
     }
     console.log(
       "🚀 ~ file: index.js:370 ~ closeIcon.addEventListener ~ query.ingredients:",
-      query.ingredients
+      query[type]
     );
 
-    /*if (type === "Appliance") {
-      allRecipes.forEach((recipe) => {
-        if (recipe.appliance === content) {
-          recipe.appliance = ""; // Met à jour la valeur dans la variable globale
-        }
-      });
-    }*/
-
-    if (type === "Appliance") {
-      const index = query.appliances.findIndex((item) => item === tagName);
+    if (type === "appliance") {
+      // Si c'est un tag "Appliance", met à jour la variable globale "allRecipes"
+      const index = query[type].findIndex((item) => item === tagName);
       if (index !== -1) {
-        query.appliances.splice(index, 1);
-      } else {
-        query.appliances.push(tagName);
-      }
-
-      allRecipes.forEach((recipe) => {
-        if (recipe.appliance === tagName) {
-          recipe.appliance = "";
-        }
-      });
-    }
-
-    /*if (type === "Ustensiles") {
-      allRecipes.forEach((recipe) => {
-        const index = recipe.ustensils.findIndex(
-          (ustensil) => ustensil === content
+        let liToRemove = document.querySelector(
+          `li[data-item-select="options-list-${type} ${tagName}"]`
         );
-        if (index !== -1) {
-          recipe.ustensils.splice(index, 1); // Supprime l'ustensile de la variable globale
-        }
-      });
-    }
-    */
+        console.log(
+          "🚀 ~ file: index.js:404 ~ addTag ~ liToRemove:",
+          liToRemove
+        );
 
-    if (type === "Ustensils") {
-      const index = query.ustensils.findIndex((item) => item === tagName);
-      if (index !== -1) {
-        query.ustensils.splice(index, 1);
+        query[type].splice(index, 1);
       } else {
-        query.ustensils.push(tagName);
+        query[type].push(tagName);
       }
       console.log(
-        "🚀 ~ file: index.js:404 ~ addTag ~ query.ustensils:",
-        query.ustensils
+        "🚀 ~ file: index.js:402 ~ closeIcon.addEventListener ~ query.appliance:",
+        query[type]
+      );
+    }
+
+    if (type === "ustensils") {
+      // Si c'est un tag "ustensils", met à jour la variable globale "allRecipes"
+      const index = query[type].findIndex((item) => item === tagName);
+      if (index !== -1) {
+        let liToRemove = document.querySelector(
+          `li[data-item-select="options-list-${type} ${tagName}"]`
+        );
+        console.log(
+          "🚀 ~ file: index.js:436 ~ addTag ~ liToRemove:",
+          liToRemove
+        );
+        query[type].splice(index, 1);
+      } else {
+        query[type].push(tagName);
+      }
+      console.log(
+        "🚀 ~ file: index.js:437 ~ closeIcon.addEventListener ~ query.ustensils:",
+        query[type]
       );
     }
   }
@@ -428,22 +469,36 @@ function addTag(tagsSection, tagName, type) {
   closeIcon.addEventListener("click", () => {
     let type = closeIcon.dataset.type;
     let content = closeIcon.dataset.content;
+    let formatedContent = content.toLocaleLowerCase().trim();
+    /*"trim" enlève les espaces avant et après le mot*/
 
-    // Met à jour la variable globale pour refléter la suppression
-    if (type === "Ingredient") {
+    // Met à jour la variable globale pour refléter la suppression <------------ Ça se passe ici
+    if (type === "ingredients") {
       // Si c'est un tag "Ingrédients", met à jour la variable globale "allRecipes"
-      const index = query.ingredients.findIndex((item) => item === content);
+      const index = query[type].findIndex((item) => item === content);
       if (index !== -1) {
-        query.ingredients.splice(index, 1);
+        let liToRemove = document.querySelector(
+          `li[data-item-select="options-list-${type} ${formatedContent}"]`
+        );
+        liToRemove.classList.remove("highlighted");
+        console.log(
+          "🚀 ~ file: index.js:372 ~ addTag ~ liToRemove:",
+          liToRemove
+        );
+        console.log(
+          "requête:",
+          `li[data-item-select="options-list-${type} ${formatedContent}"]`
+        );
+        query[type].splice(index, 1);
       } else {
-        query.ingredients.push(content);
+        query[type].push(content);
       }
       console.log(
         "🚀 ~ file: index.js:392 ~ closeIcon.addEventListener ~ query.ingredients:",
-        query.ingredients
+        query[type]
       );
 
-      if (type === "Appliance") {
+      if (type === "appliance") {
         allRecipes.forEach((recipe) => {
           if (recipe.appliance === content) {
             recipe.appliance = ""; // Met à jour la valeur dans la variable globale
@@ -451,16 +506,29 @@ function addTag(tagsSection, tagName, type) {
         });
       }
 
-      if (type === "Ustensils") {
-        const index = query.ustensils.findIndex((item) => item === tagName);
+      if (type === "ustensils") {
+        // Si c'est un tag "ustensils", met à jour la variable globale "allRecipes"
+        const index = query[type].findIndex((item) => item === content);
         if (index !== -1) {
-          query.ustensils.splice(index, 1);
+          let liToRemove = document.querySelector(
+            `li[data-item-select="options-list-${type} ${formatedContent}"]`
+          );
+          liToRemove.classList.remove("highlighted");
+          console.log(
+            "🚀 ~ file: index.js:514 ~ addTag ~ liToRemove:",
+            liToRemove
+          );
+          console.log(
+            "requête:",
+            `li[data-item-select="options-list-${type} ${formatedContent}"]`
+          );
+          query[type].splice(index, 1);
         } else {
-          query.ustensils.push(tagName);
+          query[type].push(content);
         }
         console.log(
-          "🚀 ~ file: index.js:454 ~ closeIcon.addEventListener ~ query.ustensils:",
-          query.ustensils
+          "🚀 ~ file: index.js:392 ~ closeIcon.addEventListener ~ query.ustensils:",
+          query[type]
         );
       }
     }
@@ -472,6 +540,22 @@ function addTag(tagsSection, tagName, type) {
     );
     if (ingredient) {
       ingredient.classList.remove("highlighted");
+    }
+
+    const applianceListItems = appliancesList.querySelectorAll("li");
+    const appliance = Array.from(applianceListItems).find(
+      (item) => item.textContent === /*tagName*/ content
+    );
+    if (appliance) {
+      appliance.classList.remove("highlighted");
+    }
+
+    const ustensilsListItems = ustensilsList.querySelectorAll("li");
+    const ustensils = Array.from(ustensilsListItems).find(
+      (item) => item.textContent === /*tagName*/ content
+    );
+    if (ustensils) {
+      ustensils.classList.remove("highlighted");
     }
 
     // Supprime le tag du DOM
@@ -516,7 +600,7 @@ ingredientsList.addEventListener("click", (event) => {
       // Ajoute la surbrillance jaune
       event.target.classList.add("highlighted");
       // Ajoute l'élément à la section des tags
-      addTag(ingredientsTagDiv, capitalizedIngredient, "Ingredient");
+      addTag(ingredientsTagDiv, capitalizedIngredient, "ingredients");
     }
   }
 });
@@ -535,7 +619,7 @@ appliancesList.addEventListener("click", (event) => {
       // Ajoute la surbrillance jaune
       event.target.classList.add("highlighted");
       // Ajoute l'élément à la section des tags
-      addTag(appliancesTagDiv, capitalizedAppliance, "Appliance");
+      addTag(appliancesTagDiv, capitalizedAppliance, "appliance");
     }
   }
 });
@@ -555,7 +639,7 @@ ustensilsList.addEventListener("click", (event) => {
       // Ajoute la surbrillance jaune
       event.target.classList.add("highlighted");
       // Ajoute l'élément à la section des tags
-      addTag(ustensilsTagDiv, capitalizedUstensil, "Ustensils");
+      addTag(ustensilsTagDiv, capitalizedUstensil, "ustensils");
     }
   }
 });

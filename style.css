@@ -257,7 +257,6 @@ h3, .options-list {
     flex-direction: row;
     margin-bottom: 20px;
     margin-left: 5px;
-    justify-content: space-between;
     width: 620px;
     gap: 15px;
     flex-wrap: wrap;
