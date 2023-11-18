@@ -517,18 +517,20 @@ circleXmarks.forEach((circleXmark) => {
   });
 });
 
-// -------------------------------------------------------- Filtrage des recettes
+// ------------------------- Filtrage des recettes dans l'input de recherche
 // Mise à jour de la query lors des changements de l'input de recherche
 const searchInput = document.querySelector(".search-input");
 
 searchInput.addEventListener("input", function () {
-  const searchTerm = this.value.toLowerCase();
+  const searchTerm = this.value.trim().toLowerCase();
 
-  if (searchTerm.length >= 3) {
+  if (searchTerm.length < 3) {
+    console.log("3 caractères minimum"); // Remplacer par un message d'erreur comme dans Game On
+    query.inputValue = "";
+    updateDisplayRecipes();
+  } else if (searchTerm.length >= 3) {
     query.inputValue = searchTerm;
-    updateQuery();
-  } else {
-    updateQuery();
+    updateDisplayRecipes();
   }
 });
 
@@ -538,10 +540,8 @@ function displayQueryState() {
 }
 
 // Fonction qui met à jour la variable "query" lors des changements de la barre de recherche
-function updateQuery() {
-  const searchTerm = searchInput.value.toLowerCase();
-  query.inputValue = searchTerm;
-  const filteredRecipes = filterRecipesByName(allRecipes, query.inputValue);
+function updateDisplayRecipes() {
+  const filteredRecipes = filterRecipesByNameOrTag();
   displayFilteredRecipes(filteredRecipes);
 
   displayQueryState(); // Affiche l'état de la query
@@ -550,11 +550,18 @@ function updateQuery() {
 }
 
 // Fonction de filtrage des recettes par nom
-function filterRecipesByName(recipes, searchTerm) {
-  searchTerm = searchTerm.trim().toLowerCase();
-  return recipes.filter((recipe) =>
-    recipe.name.toLowerCase().includes(searchTerm)
+function filterRecipesByNameOrTag() {
+  let listRecipesFiltered;
+
+  // Tri correspondant au nom pour voir ce qui colle avec l'input de recherche
+  listRecipesFiltered = allRecipes.filter((recipe) =>
+    recipe.name.toLowerCase().includes(query.inputValue)
   );
+  // TO DO : Faire le tri sur les ingrédients
+  /*listRecipesFiltered = listRecipesFiltered.filter((recipe) =>
+    recipe.ingredient.toLowerCase().includes(query.ingredients)
+  );*/
+  return listRecipesFiltered;
 }
 
 // Fonction qui affiche les recettes filtrées sur la page
