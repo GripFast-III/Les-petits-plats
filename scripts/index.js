@@ -8,6 +8,10 @@ let query = {
   ustensils: [],
 };
 
+//
+const formatWordRecipe = (nbRecipe) =>
+  `${nbRecipe} ${nbRecipe > 1 ? "recettes" : "recette"}`;
+
 // Récupère les recettes depuis le fichier recipes.json
 async function getRecipes() {
   try {
@@ -144,7 +148,7 @@ async function displayRecipes() {
     });
 
     // Met à jour le nombre total de recettes dans la <div class="recipes-amount" id="total-recipes">
-    totalRecipesElement.textContent = `${recipes.length} recettes`;
+    totalRecipesElement.textContent = formatWordRecipe(recipes.length);
   } catch (error) {
     console.error("Erreur lors de l'affichage des recettes:", error);
   }
@@ -418,6 +422,8 @@ function addTag(tagName, type) {
 
   // Affiche les informations du tag ajouté dans la console
   console.log("Tag ajouté - Type:", type, "Valeur:", tagName);
+
+  updateDisplayRecipes();
 }
 
 // Fonction qui supprime le tag dans la section des tags
@@ -552,15 +558,64 @@ function updateDisplayRecipes() {
 // Fonction de filtrage des recettes par nom
 function filterRecipesByNameOrTag() {
   let listRecipesFiltered;
-
   // Tri correspondant au nom pour voir ce qui colle avec l'input de recherche
-  listRecipesFiltered = allRecipes.filter((recipe) =>
-    recipe.name.toLowerCase().includes(query.inputValue)
+  listRecipesFiltered = allRecipes.filter(
+    (recipe) =>
+      recipe.name.toLowerCase().includes(query.inputValue) ||
+      recipe.description.toLowerCase().includes(query.inputValue)
   );
-  // TO DO : Faire le tri sur les ingrédients
-  /*listRecipesFiltered = listRecipesFiltered.filter((recipe) =>
-    recipe.ingredient.toLowerCase().includes(query.ingredients)
-  );*/
+
+  // Compare l'ingrédient sélectionné avec tous les autres de la liste
+  query.ingredients.forEach((item) => {
+    console.log(item);
+    allRecipes.forEach((currentRecipe) => {
+      currentRecipe.ingredients.forEach((currentIngredient) => {
+        console.log(
+          "currentIngredient.ingredient",
+          currentIngredient.ingredient
+        );
+        console.log("item", item);
+        if (currentIngredient.ingredient === item) {
+          listRecipesFiltered.push(currentRecipe);
+        }
+      });
+    });
+  });
+
+  // Même chose pour appareils
+  query.appliances.forEach((item) => {
+    console.log(item);
+    allRecipes.forEach((currentRecipe) => {
+      // Vérifier si la propriété "appliances" existe et est un tableau
+      if (currentRecipe.appliances && Array.isArray(currentRecipe.appliances)) {
+        currentRecipe.appliances.forEach((currentAppliance) => {
+          console.log("currentAppliance.appliance", currentAppliance.appliance);
+          console.log("item", item);
+          if (currentAppliance.appliance === item) {
+            listRecipesFiltered.push(currentRecipe);
+          }
+        });
+      }
+    });
+  });
+
+  // Même chose pour ustensils
+  query.ustensils.forEach((item) => {
+    console.log(item);
+    allRecipes.forEach((currentRecipe) => {
+      // Vérifier si la propriété "ustensils" existe et est un tableau
+      if (currentRecipe.ustensils && Array.isArray(currentRecipe.ustensils)) {
+        currentRecipe.ustensils.forEach((currentUstensil) => {
+          console.log("currentUstensil", currentUstensil);
+          console.log("item", item);
+          if (currentUstensil.ustensil === item) {
+            listRecipesFiltered.push(currentRecipe);
+          }
+        });
+      }
+    });
+  });
+
   return listRecipesFiltered;
 }
 
@@ -575,7 +630,7 @@ function displayFilteredRecipes(recipes) {
   });
 
   const totalRecipesElement = document.getElementById("total-recipes");
-  totalRecipesElement.textContent = `${recipes.length} recettes`;
+  totalRecipesElement.textContent = formatWordRecipe(recipes.length);
 }
 
 displayQueryState();
