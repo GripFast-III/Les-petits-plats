@@ -548,6 +548,10 @@ function displayQueryState() {
 // Fonction qui met à jour la variable "query" lors des changements de la barre de recherche
 function updateDisplayRecipes() {
   const filteredRecipes = filterRecipesByNameOrTag();
+  console.log(
+    "🚀 ~ file: index.js:551 ~ updateDisplayRecipes ~ filteredRecipes:",
+    filteredRecipes
+  );
   displayFilteredRecipes(filteredRecipes);
 
   displayQueryState(); // Affiche l'état de la query
@@ -557,25 +561,21 @@ function updateDisplayRecipes() {
 
 // Fonction de filtrage des recettes par nom
 function filterRecipesByNameOrTag() {
-  let listRecipesFiltered;
+  let listRecipesFiltered = [];
   // Tri correspondant au nom pour voir ce qui colle avec l'input de recherche
-  listRecipesFiltered = allRecipes.filter(
+  /*listRecipesFiltered = allRecipes.filter(
     (recipe) =>
       recipe.name.toLowerCase().includes(query.inputValue) ||
       recipe.description.toLowerCase().includes(query.inputValue)
-  );
+  );*/
 
   // Compare l'ingrédient sélectionné avec tous les autres de la liste
   query.ingredients.forEach((item) => {
     console.log(item);
     allRecipes.forEach((currentRecipe) => {
       currentRecipe.ingredients.forEach((currentIngredient) => {
-        console.log(
-          "currentIngredient.ingredient",
-          currentIngredient.ingredient
-        );
-        console.log("item", item);
-        if (currentIngredient.ingredient === item) {
+        if (currentIngredient.ingredient.trim() === item.trim()) {
+          console.log("Trouvé (ingrédient)!", currentRecipe);
           listRecipesFiltered.push(currentRecipe);
         }
       });
@@ -589,9 +589,8 @@ function filterRecipesByNameOrTag() {
       // Vérifier si la propriété "appliances" existe et est un tableau
       if (currentRecipe.appliances && Array.isArray(currentRecipe.appliances)) {
         currentRecipe.appliances.forEach((currentAppliance) => {
-          console.log("currentAppliance.appliance", currentAppliance.appliance);
-          console.log("item", item);
-          if (currentAppliance.appliance === item) {
+          if (currentAppliance.appliance.trim() === item.trim()) {
+            console.log("Trouvé (appareil)!", currentRecipe);
             listRecipesFiltered.push(currentRecipe);
           }
         });
@@ -606,9 +605,12 @@ function filterRecipesByNameOrTag() {
       // Vérifier si la propriété "ustensils" existe et est un tableau
       if (currentRecipe.ustensils && Array.isArray(currentRecipe.ustensils)) {
         currentRecipe.ustensils.forEach((currentUstensil) => {
-          console.log("currentUstensil", currentUstensil);
-          console.log("item", item);
-          if (currentUstensil.ustensil === item) {
+          console.log(
+            "🚀 ~ file: index.js:608 ~ currentRecipe.ustensils.forEach ~ currentUstensil:",
+            currentUstensil
+          );
+          if (currentUstensil.trim() === item.trim()) {
+            console.log("Trouvé (ustensiles)!", currentRecipe);
             listRecipesFiltered.push(currentRecipe);
           }
         });
